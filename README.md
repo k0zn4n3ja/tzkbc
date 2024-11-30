@@ -18,7 +18,8 @@
 
 <!-- TODO: fill in with files -->
 minimal_zk_blockchain/
-
+    
+    ├── docs/
     ├── src/
     │   ├── main.rs
     │   ├── lib.rs
