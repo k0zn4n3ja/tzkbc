@@ -20,19 +20,11 @@
 minimal_zk_blockchain/
 
 ├── src/
-
 │   ├── main.rs
-
 │   ├── lib.rs
-
 │   ├── blockchain/
-
 │   ├── zk/
-
 │   ├── network/
-
 │   ├── utils/
-
 │   └── tests/
-
 └─────────────────────
