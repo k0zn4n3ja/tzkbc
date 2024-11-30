@@ -17,8 +17,8 @@
 ## Folder Structure
 
 <!-- TODO: fill in with files -->
-minimal_zk_blockchain/
-    
+
+    tzbk/
     ├── docs/
     ├── src/
     │   ├── main.rs
