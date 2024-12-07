@@ -6,6 +6,9 @@ use crate::network::message::Message;
 use crate::blockchain::blockchain::Blockchain;
 use std::sync::{Arc, Mutex};
 
+const MAX_TX_SIZE: u8 = 100;
+const DIFFICULTY: usize = 1;
+
 pub fn connect_to_peer(blockchain: Arc<Mutex<Blockchain>>, address: &str) {
     match TcpStream::connect(address) {
         Ok(mut stream) => {
@@ -14,7 +17,7 @@ pub fn connect_to_peer(blockchain: Arc<Mutex<Blockchain>>, address: &str) {
 
             let blockchain = Arc::clone(&blockchain);
             std::thread::spawn(move || {
-                handle_server_messages(stream, blockchain);
+                handle_server_messages(stream, blockchain); // TODO: GUJAS see about getting rid of all this cloning
             });
         }
         Err(e) => {
@@ -60,6 +63,9 @@ fn handle_message(message: Message, blockchain: &Arc<Mutex<Blockchain>>) {
         Message::Transaction(tx) => {
             println!("Received transaction: {:?}", tx);
             let mut chain = blockchain.lock().unwrap();
+            if chain.pending_transactions.len() >= MAX_TX_SIZE.into() {
+                chain.mine_pending_transactions(DIFFICULTY);
+            }
             chain.add_transaction(tx);
         }
         Message::Block(block) => {

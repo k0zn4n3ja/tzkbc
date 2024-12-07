@@ -3,7 +3,6 @@ use std::net::TcpStream;
 use crate::network::message::Message;
 use crate::network::utils::serialize_message;
 use crate::utils::time::current_timestamp;
-use std::sync::{Arc, Mutex}; // TODO: GUJAS do this
 use super::block::{Block, BlockHeader};
 use super::transaction::Transaction;
 
@@ -56,7 +55,12 @@ impl Blockchain {
         }
     }
 
-    fn mine_pending_transactions(&mut self, difficulty: usize) {
+    /**
+     * PUBLIC METHODS
+     */
+
+    pub fn mine_pending_transactions(&mut self, difficulty: usize) {
+        println!("Mining pending transactions");
         let mut block = Block {
             header: BlockHeader {
                 index: self.chain.len() as u64,
@@ -75,8 +79,21 @@ impl Blockchain {
             block.hash = block.header.calculate_hash();
         }
 
-        self.chain.push(block);
+        println!("Mined block with hash: {}", block.hash);
+
+        self.chain.push(block.clone());
+        self.broadcast_block(&block);
         self.pending_transactions.clear();
+    }
+
+    pub fn add_peer(&mut self, address: String) {
+        self.peers.push(address);
+    }
+
+    pub fn add_peers(&mut self, addresses: Vec<String>) {
+        for address in addresses {
+            self.add_peer(address);
+        }
     }
 
     /**
@@ -98,18 +115,8 @@ impl Blockchain {
         let data = serialize_message(&message);
         for peer in &self.peers {
             if let Ok(mut stream) = TcpStream::connect(peer) {
-                stream.write_all(&data).expect("Failed to send block");
+                stream.write_all(&data).expect("Failed to send block"); // TODO: GUJAS this expect will panic the program, probably not what you want
             }
-        }
-    }
-
-    pub fn add_peer(&mut self, address: String) {
-        self.peers.push(address);
-    }
-
-    pub fn add_peers(&mut self, addresses: Vec<String>) {
-        for address in addresses {
-            self.add_peer(address);
         }
     }
 
