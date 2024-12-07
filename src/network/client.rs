@@ -23,6 +23,12 @@ pub fn connect_to_peer(blockchain: Arc<Mutex<Blockchain>>, address: &str) {
     }
 }
 
+pub fn connect_to_peers(blockchain: Arc<Mutex<Blockchain>>, addresses: Vec<String>) {
+    for address in addresses {
+        connect_to_peer(Arc::clone(&blockchain), &address);
+    }
+}
+
 fn request_chain(stream: &mut TcpStream) {
     let message = Message::RequestChain;
     let data = serialize_message(&message);

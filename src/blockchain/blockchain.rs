@@ -6,7 +6,6 @@ use crate::utils::time::current_timestamp;
 use std::sync::{Arc, Mutex}; // TODO: GUJAS do this
 use super::block::{Block, BlockHeader};
 use super::transaction::Transaction;
-use structopt::StructOpt;
 
 pub struct Blockchain {
     pub chain: Vec<Block>,
