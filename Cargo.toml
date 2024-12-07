@@ -2,6 +2,7 @@
 name = "tzkbc"
 version = "0.1.0"
 edition = "2021"
+default-run = "tzkbc"
 
 [workspace]
 members = ["."]
@@ -10,8 +11,6 @@ default-members = ["."]
 [[bin]]
 name = "tzkbc"
 path = "src/main.rs"
-
-default-run = "tzkbc"
 
 [dependencies]
 rand = "0.8"
