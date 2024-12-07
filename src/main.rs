@@ -14,15 +14,14 @@ fn main() {
 
     let blockchain = Arc::new(Mutex::new(Blockchain::new()));
     let server_blockchain = Arc::clone(&blockchain);
-    std::thread::spawn(move || {
+    let server_handle = std::thread::spawn(move || {
         start_server(server_blockchain, args.port);
     });
-
-    // Connect to peers
-    // let peer_blockchain = Arc::clone(&blockchain);
 
     {
         let mut blockchain = blockchain.lock().unwrap(); // TODO: GUJAS get rid of this
         blockchain.add_peers(args.peers.clone()); // get this of this cloning BS
     }    
+
+    server_handle.join().expect("Server thread panicked");
 }

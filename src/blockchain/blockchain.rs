@@ -15,6 +15,31 @@ pub struct Blockchain {
 }
 
 impl Blockchain {
+    pub fn new() -> Self {
+        // Create the genesis block
+        let mut genesis_block = Block {
+            header: BlockHeader {
+                index: 0,
+                previous_hash: String::from(""), // No previous hash for genesis block
+                timestamp: current_timestamp(),
+                nonce: 0,
+                version: 1,
+                merkle_root: String::new(), // TODO: GUJAS whatevs man
+            },
+
+            transactions: vec![],
+            hash: String::new(), // calced underneath
+        };
+
+        genesis_block.hash = genesis_block.header.calculate_hash();
+
+        Blockchain {
+            chain: vec![genesis_block],
+            pending_transactions: vec![],
+            peers: vec![],
+        }
+    }
+
     fn get_latest_block(&self) -> Option<&Block> {
         self.chain.last()
     }
@@ -53,31 +78,6 @@ impl Blockchain {
 
         self.chain.push(block);
         self.pending_transactions.clear();
-    }
-
-    pub fn new() -> Self {
-        // Create the genesis block
-        let mut genesis_block = Block {
-            header: BlockHeader {
-                index: 0,
-                previous_hash: String::from(""), // No previous hash for genesis block
-                timestamp: current_timestamp(),
-                nonce: 0,
-                version: 1,
-                merkle_root: String::new(), // TODO: GUJAS whatevs man
-            },
-
-            transactions: vec![],
-            hash: String::new(), // calced underneath
-        };
-
-        genesis_block.hash = genesis_block.header.calculate_hash();
-
-        Blockchain {
-            chain: vec![genesis_block],
-            pending_transactions: vec![],
-            peers: vec![],
-        }
     }
 
     /**
