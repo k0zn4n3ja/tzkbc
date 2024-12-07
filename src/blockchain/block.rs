@@ -1,7 +1,7 @@
-use serde::{Serialize, Deserialize};
-use sha2::{Digest, Sha256};
-use hex;
 use super::transaction::Transaction;
+use hex;
+use serde::{Deserialize, Serialize};
+use sha2::{Digest, Sha256};
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct BlockHeader {
@@ -24,7 +24,6 @@ impl BlockHeader {
     pub fn calculate_hash(&self) -> String {
         let mut hasher = Sha256::new();
         let mut header_bytes = Vec::new();
-
         header_bytes.extend(&self.index.to_le_bytes());
         header_bytes.extend(&self.version.to_le_bytes());
         header_bytes.extend(hex::decode(&self.previous_hash).expect("Invalid previous hash"));
