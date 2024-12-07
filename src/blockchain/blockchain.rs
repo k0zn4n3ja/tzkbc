@@ -43,7 +43,7 @@ impl Blockchain {
     }
 
     fn validate_transaction(&self, _transaction: &Transaction) -> bool {
-        // TODO: GUJAS update this to do the actual validations - merkle proof of txs, sigs etc.
+        // TODO: GUJAS update this to do the actual validations - utxos, sigs etc.
         true
     }
 
@@ -105,7 +105,9 @@ impl Blockchain {
         let data = serialize_message(&message);
         for peer in &self.peers {
             if let Ok(mut stream) = TcpStream::connect(peer) {
-                stream.write_all(&data).expect("Failed to send transaction");
+                if stream.write_all(&data).is_err() {
+                    println!("Failed to send transaction to peer: {}", peer);
+                }
             }
         }
     }
@@ -115,7 +117,9 @@ impl Blockchain {
         let data = serialize_message(&message);
         for peer in &self.peers {
             if let Ok(mut stream) = TcpStream::connect(peer) {
-                stream.write_all(&data).expect("Failed to send block"); // TODO: GUJAS this expect will panic the program, probably not what you want
+                if stream.write_all(&data).is_err() {
+                    println!("Failed to send block to peer: {}", peer);
+                }
             }
         }
     }
