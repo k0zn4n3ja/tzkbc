@@ -1,4 +1,5 @@
 # Toy Zero-Knowledge Blockhain
+I've been watching Mr Robot so please enjoy this hacker aesthetic:
 
     ⠀⢠⣾⣿⣿⣗⣢⠀⠀⠀⠀⠀⠀⢤⣒⣿⣿⣷⣆⠀⠀
     ⠀⠋⠉⠉⠙⠻⣿⣷⡄⠀⠀⠀⡄⣾⣿⠛⠉⠉⠉⠃⠀
